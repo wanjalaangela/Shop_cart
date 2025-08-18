@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Products</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+    <h1 class="text-3xl font-bold mb-6">Fresh Products</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% for product in products %}
+        <div class="bg-white rounded shadow p-4 flex flex-col">
+            <h2 class="text-xl font-semibold mb-2">{{ product.name }}</h2>
+
+            {% if product.image %}
+                <img src="{{ product.image }}" alt="{{ product.name }}" class="object-contain h-40 w-full mb-3" />
+            {% else %}
+                <div class="h-40 bg-gray-200 flex items-center justify-center text-gray-500 mb-3">
+                    No image available
+                </div>
+            {% endif %}
+
+            <p class="mb-2 text-gray-700">{{ product.description }}</p>
+            <p class="font-semibold mb-1">Price: KES {{ product.price }}</p>
+            <p class="mb-3">Stock: {{ product.stock }}</p>
+
+            <a href="{% url 'product_details' product.id %}" class="mt-auto bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 text-center">
+                View Details
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
