@@ -1,19 +1,25 @@
-from django.shortcuts import render
-from .models import Product
-
-# Create your views here.
-def list_products(request):
-    products = Product.objects.all()
-    return render(request,"catalogue/products.html", {"products":products})
-
-def product_detail(request,id):
-    product = Product.objects.get(id=id)
-    return render(request,"catalogue/products_details.html",{"product":product})
-
-
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, CartItem
+from .forms import ProductForm
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+
+
+def list_products(request):
+    product_list = Product.objects.all()
+    paginator = Paginator(product_list, 2)  
+    
+    page_number = request.GET.get('page')
+    products = paginator.get_page(page_number)
+    
+    return render(request, "catalogue/products.html", {"products": products})
+
+def product_detail(request, id):
+    product = get_object_or_404(Product, id=id)
+    return render(request, "catalogue/products_details.html", {"product": product})
+
+
+
 
 @login_required
 def add_to_cart(request, product_id):
@@ -39,3 +45,27 @@ def remove_from_cart(request, item_id):
     cart_item.delete()
     return redirect("cart_detail")
 
+
+def Create_product(request):
+    if request.method == "POST":
+           form = ProductForm(request.POST)
+           if form.is_valid():
+            form.save()
+            return redirect("list_products")
+    else:
+        form = ProductForm()
+    return render(request, "catalogue/create_product.html", {"form":form})
+# request.form is a dictionary
+
+
+
+@login_required
+def product_upload(request):
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("list_products")
+    else:
+        form = ProductForm()
+    return render(request, "catalogue/product_upload.html", {"form": form})

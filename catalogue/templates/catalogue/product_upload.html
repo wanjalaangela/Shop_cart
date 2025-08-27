@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Upload Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <h1 class="text-2xl font-bold mb-4">Upload Product</h1>
+
+    <form method="post" enctype="multipart/form-data" class="max-w-md bg-white p-6 rounded shadow">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+            Upload
+        </button>
+    </form>
+</body>
+</html>

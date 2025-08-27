@@ -29,7 +29,7 @@
                     <td class="border p-2">
                         <form action="{% url 'remove_from_cart' item.id %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                            <button type="submit" class="bg-pink-900 text-white px-3 py-1 rounded hover:bg-pink-600">
                                 Remove
                             </button>
                         </form>
